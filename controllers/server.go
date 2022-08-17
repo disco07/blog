@@ -4,6 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"github.com/disco07/blog/config"
+	"github.com/disco07/blog/repository"
+	"github.com/jmoiron/sqlx"
 	"log"
 	"net/http"
 	"time"
@@ -11,6 +13,7 @@ import (
 
 type Server struct {
 	config config.Config
+	repo   repository.Repository
 }
 
 func Run() {
@@ -21,8 +24,14 @@ func Run() {
 	flag.StringVar(&cfg.DB, "dsn", "postgres://moviego:moviego@localhost/moviego?sslmode=disable", "Postgres connection string")
 	flag.Parse()
 
+	db, err := open(cfg)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
 	server := Server{
 		config: cfg,
+		repo:   repository.NewRepository(db),
 	}
 
 	srv := &http.Server{
@@ -38,4 +47,13 @@ func Run() {
 		return
 	}
 
+}
+
+func open(cfg config.Config) (*sqlx.DB, error) {
+	db, err := sqlx.Connect("postgres", cfg.DB)
+	if err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+	return db, nil
 }
