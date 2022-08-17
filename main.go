@@ -1,7 +1,9 @@
 package main
 
-import "github.com/disco07/blog/routes"
+import (
+	"github.com/disco07/blog/controllers"
+)
 
 func main() {
-	routes.Run()
+	controllers.Run()
 }
