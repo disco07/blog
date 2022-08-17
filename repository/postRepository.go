@@ -38,7 +38,14 @@ func (r Repository) InsertMovie(post models.Post) error {
 	defer cancel()
 
 	query := `INSERT INTO post (author_id, title, slug, summary, content, published_at) VALUES ($1, $2, $3, $4, $5, $6)`
-	_, err := r.DB.NamedExecContext(ctx, query, post)
+
+	stmt, err := r.DB.PrepareContext(ctx, query)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	_, err = r.DB.NamedExecContext(ctx, query, post)
 	if err != nil {
 		return err
 	}
