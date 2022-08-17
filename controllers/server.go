@@ -6,6 +6,7 @@ import (
 	"github.com/disco07/blog/config"
 	"github.com/disco07/blog/repository"
 	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
 	"log"
 	"net/http"
 	"time"
@@ -21,7 +22,7 @@ func Run() {
 
 	flag.IntVar(&cfg.Port, "port", 4001, "Server port to listen on")
 	flag.StringVar(&cfg.Env, "env", "dev", "Application environment (dev|prod)")
-	flag.StringVar(&cfg.DB, "dsn", "postgres://moviego:moviego@localhost/moviego?sslmode=disable", "Postgres connection string")
+	flag.StringVar(&cfg.DB, "dsn", "postgres://blog:blog@localhost/blog?sslmode=disable", "Postgres connection string")
 	flag.Parse()
 
 	db, err := open(cfg)

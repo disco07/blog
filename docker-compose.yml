@@ -1,0 +1,55 @@
+version: '3'
+
+networks:
+  golang-postgres:
+
+services:
+
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: go-blog-container
+    depends_on:
+      - postgres
+    networks:
+      - golang-postgres
+    ports:
+      - "4001:4001"
+
+  postgres:
+    image: postgres
+    container_name: postgres-blog-container
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-blog}
+      # You should definitely change the password in production
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-blog}
+      POSTGRES_USER: ${POSTGRES_USER:-blog}
+    volumes:
+      - db-data:/var/lib/postgresql/data:rw
+      - ./db:/docker-entrypoint-initdb.d/
+    networks:
+      - golang-postgres
+
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin-blog-container
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=moviego@pgadmin.org
+      - PGADMIN_DEFAULT_PASSWORD=7BixyPr25B28s7SQ
+    ports:
+      - '5050:80'
+    restart: always
+    volumes:
+      - pgadmin:/root/.pgadmin
+    networks:
+      - golang-postgres
+
+
+volumes:
+  db-data:
+  pgadmin:

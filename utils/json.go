@@ -7,11 +7,13 @@ import (
 )
 
 func JSON(w http.ResponseWriter, statusCode int, data interface{}) {
-	w.WriteHeader(statusCode)
-	err := json.NewEncoder(w).Encode(data)
+	js, err := json.Marshal(data)
 	if err != nil {
 		fmt.Fprintf(w, "%s", err.Error())
 	}
+	w.WriteHeader(statusCode)
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(js)
 }
 
 func Error(w http.ResponseWriter, statusCode int, err error) {
