@@ -26,12 +26,12 @@ func Run() {
 	flag.Parse()
 
 	db, err := open(cfg)
-	defer db.Close()
 	if err != nil {
 		log.Fatalln(err)
 	}
+	defer db.Close()
 
-	server := Server{
+	server := &Server{
 		config: cfg,
 		repo:   repository.NewRepository(db),
 	}
@@ -48,7 +48,6 @@ func Run() {
 		log.Fatal(err)
 		return
 	}
-
 }
 
 func open(cfg config.Config) (*sqlx.DB, error) {
