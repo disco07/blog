@@ -13,9 +13,17 @@ func (s Server) getOnePost(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		utils.Error(w, http.StatusBadRequest, err)
 	}
-	post, err := s.repo.FindById(id)
+	post, err := s.repo.FindPostById(id)
 	if err != nil {
 		utils.Error(w, http.StatusBadRequest, err)
 	}
 	utils.JSON(w, http.StatusOK, post)
+}
+
+func (s Server) getAllPosts(w http.ResponseWriter, _ *http.Request) {
+	posts, err := s.repo.FindAllPost()
+	if err != nil {
+		utils.Error(w, http.StatusBadRequest, err)
+	}
+	utils.JSON(w, http.StatusOK, posts)
 }

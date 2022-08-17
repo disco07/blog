@@ -26,6 +26,7 @@ func Run() {
 	flag.Parse()
 
 	db, err := open(cfg)
+	defer db.Close()
 	if err != nil {
 		log.Fatalln(err)
 	}
