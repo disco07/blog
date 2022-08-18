@@ -33,7 +33,7 @@ func (r Repository) FindAllPost() ([]*models.Post, error) {
 	return posts, nil
 }
 
-func (r Repository) InsertMovie(post models.Post) error {
+func (r Repository) InsertPost(post models.Post) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -46,6 +46,45 @@ func (r Repository) InsertMovie(post models.Post) error {
 	defer stmt.Close()
 
 	_, err = r.DB.NamedExecContext(ctx, query, post)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r Repository) UpdatePost(post models.Post) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	query := `UPDATE post SET author_id = $1, title = $2, slug = $3, summary = $4, content = $5 WHERE id = $7`
+
+	stmt, err := r.DB.PrepareContext(ctx, query)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	_, err = r.DB.NamedExecContext(ctx, query, post)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r Repository) DeletePost(id int) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	query := `DELETE FROM post WHERE id = $1`
+	stmt, err := r.DB.PrepareContext(ctx, query)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	_, err = r.DB.NamedExecContext(ctx, query, id)
 	if err != nil {
 		return err
 	}

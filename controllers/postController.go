@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 func (s Server) getOnePost(w http.ResponseWriter, r *http.Request) {
@@ -40,8 +41,43 @@ func (s Server) createPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := s.repo.InsertMovie(post)
+	post.PublishedAt = time.Now()
+
+	if err := s.repo.InsertPost(post); err != nil {
+		utils.Error(w, http.StatusBadRequest, err)
+		return
+	}
+}
+
+func (s Server) updatePost(w http.ResponseWriter, r *http.Request) {
+	var post models.Post
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
+		utils.Error(w, http.StatusBadRequest, err)
+		return
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&post); err != nil {
+		utils.Error(w, http.StatusBadRequest, err)
+		return
+	}
+	post.ID = id
+	if err := s.repo.UpdatePost(post); err != nil {
+		utils.Error(w, http.StatusBadRequest, err)
+		return
+	}
+}
+
+func (s Server) deletePost(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		utils.Error(w, http.StatusBadRequest, err)
+		return
+	}
+
+	if err := s.repo.DeletePost(id); err != nil {
 		utils.Error(w, http.StatusBadRequest, err)
 		return
 	}
