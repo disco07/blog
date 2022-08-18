@@ -47,6 +47,11 @@ func (s Server) createPost(w http.ResponseWriter, r *http.Request) {
 		utils.Error(w, http.StatusBadRequest, err)
 		return
 	}
+	res := jsonResponse{
+		Status:  true,
+		Message: "successfully added",
+	}
+	utils.JSON(w, http.StatusCreated, res)
 }
 
 func (s Server) updatePost(w http.ResponseWriter, r *http.Request) {
@@ -67,6 +72,11 @@ func (s Server) updatePost(w http.ResponseWriter, r *http.Request) {
 		utils.Error(w, http.StatusBadRequest, err)
 		return
 	}
+	res := jsonResponse{
+		Status:  true,
+		Message: "successfully updated",
+	}
+	utils.JSON(w, http.StatusCreated, res)
 }
 
 func (s Server) deletePost(w http.ResponseWriter, r *http.Request) {
@@ -81,4 +91,9 @@ func (s Server) deletePost(w http.ResponseWriter, r *http.Request) {
 		utils.Error(w, http.StatusBadRequest, err)
 		return
 	}
+	res := jsonResponse{
+		Status:  true,
+		Message: "successfully deleted",
+	}
+	utils.JSON(w, http.StatusCreated, res)
 }
