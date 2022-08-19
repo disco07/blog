@@ -38,7 +38,6 @@ func (r Repository) InsertPost(post models.Post) error {
 	defer cancel()
 
 	query := `INSERT INTO post (author_id, title, slug, summary, content, published_at) VALUES ($1, $2, $3, $4, $5, $6)`
-
 	stmt, err := r.DB.PrepareContext(ctx, query)
 	if err != nil {
 		return err
