@@ -7,7 +7,6 @@ import (
 	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
-	"time"
 )
 
 func (s Server) getOneTag(w http.ResponseWriter, r *http.Request) {
@@ -40,8 +39,6 @@ func (s Server) createTag(w http.ResponseWriter, r *http.Request) {
 		utils.Error(w, http.StatusBadRequest, err)
 		return
 	}
-
-	tag.PublishedAt = time.Now()
 
 	if err := s.repo.InsertTag(tag); err != nil {
 		utils.Error(w, http.StatusBadRequest, err)
