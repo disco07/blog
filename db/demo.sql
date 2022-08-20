@@ -1,10 +1,10 @@
-CREATE TABLE comment
+CREATE TABLE IF NOT EXISTS public.comment
 (
-    id           int          NOT NULL,
-    post_id      int          NOT NULL,
-    author_id    int          NOT NULL,
-    content      text         NOT NULL,
-    published_at timestamp(0) NOT NULL
+    id integer NOT NULL,
+    post_id integer NOT NULL,
+    author_id integer NOT NULL,
+    content text COLLATE pg_catalog."default" NOT NULL,
+    published_at timestamp(0) without time zone NOT NULL
 );
 
 --
@@ -473,15 +473,15 @@ VALUES (122, 25, 3,
 --
 
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
-CREATE TABLE post
+CREATE TABLE IF NOT EXISTS public.post
 (
-    id           int          NOT NULL,
-    author_id    int          NOT NULL,
-    title        varchar(255) NOT NULL,
-    slug         varchar(255) NOT NULL,
-    summary      varchar(255) NOT NULL,
-    content      text         NOT NULL,
-    published_at timestamp(0) NOT NULL
+    id integer NOT NULL,
+    author_id integer NOT NULL,
+    title character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    slug character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    summary character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    content text COLLATE pg_catalog."default" NOT NULL,
+    published_at timestamp(0) without time zone NOT NULL
 );
 
 --
@@ -625,10 +625,10 @@ VALUES (22, 2, 'Teres talis saepe tractare de camerarius flavum sensorem',
 --
 
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
-CREATE TABLE post_tag
+CREATE TABLE IF NOT EXISTS public.post_tag
 (
-    post_id int NOT NULL,
-    tag_id  int NOT NULL
+    post_id integer NOT NULL,
+    tag_id integer NOT NULL
 );
 
 --
@@ -741,10 +741,10 @@ VALUES (1, 1),
 --
 
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
-CREATE TABLE tag
+CREATE TABLE IF NOT EXISTS public.tag
 (
-    id   int          NOT NULL,
-    name varchar(255) NOT NULL
+    id integer NOT NULL,
+    name character varying(255) COLLATE pg_catalog."default" NOT NULL
 );
 
 --
@@ -770,14 +770,14 @@ VALUES (4, 'adipiscing'),
 --
 
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
-CREATE TABLE user
+CREATE TABLE IF NOT EXISTS public."user"
 (
-    id        int          NOT NULL,
-    full_name varchar(255) NOT NULL,
-    username  varchar(255) NOT NULL,
-    email     varchar(255) NOT NULL,
-    password  varchar(255) NOT NULL,
-    roles     text         NOT NULL
+    id integer NOT NULL,
+    full_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    username character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    password character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    roles text COLLATE pg_catalog."default" NOT NULL
 );
 
 --
