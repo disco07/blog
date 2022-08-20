@@ -14,12 +14,15 @@ func (s Server) createUser(w http.ResponseWriter, r *http.Request) {
 		utils.Error(w, http.StatusBadRequest, err)
 		return
 	}
+
 	password, err := utils.HashPassword(user.Password)
 	if err != nil {
 		utils.Error(w, http.StatusBadRequest, err)
 		return
 	}
 	user.Password = password
+
+	user.Role = []string{"ROLE_USER"}
 
 	if err := s.repo.CreateUser(user); err != nil {
 		utils.Error(w, http.StatusBadRequest, err)
