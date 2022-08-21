@@ -24,7 +24,7 @@ func (s Server) createUser(w http.ResponseWriter, r *http.Request) {
 
 	user.Role = []string{"ROLE_USER"}
 
-	if err := s.repo.CreateUser(user); err != nil {
+	if err := s.repo.CreateUser(user, r.Context()); err != nil {
 		utils.Error(w, http.StatusBadRequest, err)
 		return
 	}

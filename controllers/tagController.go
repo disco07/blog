@@ -16,7 +16,7 @@ func (s Server) getOneTag(w http.ResponseWriter, r *http.Request) {
 		utils.Error(w, http.StatusBadRequest, err)
 		return
 	}
-	tag, err := s.repo.FindTagById(id)
+	tag, err := s.repo.FindTagById(id, r.Context())
 	if err != nil {
 		utils.Error(w, http.StatusBadRequest, err)
 		return
@@ -24,8 +24,8 @@ func (s Server) getOneTag(w http.ResponseWriter, r *http.Request) {
 	utils.JSON(w, http.StatusOK, tag)
 }
 
-func (s Server) getAllTags(w http.ResponseWriter, _ *http.Request) {
-	tags, err := s.repo.FindAllTag()
+func (s Server) getAllTags(w http.ResponseWriter, r *http.Request) {
+	tags, err := s.repo.FindAllTag(r.Context())
 	if err != nil {
 		utils.Error(w, http.StatusBadRequest, err)
 		return
@@ -40,7 +40,7 @@ func (s Server) createTag(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := s.repo.InsertTag(tag); err != nil {
+	if err := s.repo.InsertTag(tag, r.Context()); err != nil {
 		utils.Error(w, http.StatusBadRequest, err)
 		return
 	}
@@ -65,7 +65,7 @@ func (s Server) updateTag(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	tag.ID = id
-	if err := s.repo.UpdateTag(tag); err != nil {
+	if err := s.repo.UpdateTag(tag, r.Context()); err != nil {
 		utils.Error(w, http.StatusBadRequest, err)
 		return
 	}
@@ -84,7 +84,7 @@ func (s Server) deleteTag(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := s.repo.DeleteTag(id); err != nil {
+	if err := s.repo.DeleteTag(id, r.Context()); err != nil {
 		utils.Error(w, http.StatusBadRequest, err)
 		return
 	}

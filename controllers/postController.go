@@ -17,7 +17,7 @@ func (s Server) getOnePost(w http.ResponseWriter, r *http.Request) {
 		utils.Error(w, http.StatusBadRequest, err)
 		return
 	}
-	post, err := s.repo.FindPostById(id)
+	post, err := s.repo.FindPostById(id, r.Context())
 	if err != nil {
 		utils.Error(w, http.StatusBadRequest, err)
 		return
@@ -25,8 +25,8 @@ func (s Server) getOnePost(w http.ResponseWriter, r *http.Request) {
 	utils.JSON(w, http.StatusOK, post)
 }
 
-func (s Server) getAllPosts(w http.ResponseWriter, _ *http.Request) {
-	posts, err := s.repo.FindAllPost()
+func (s Server) getAllPosts(w http.ResponseWriter, r *http.Request) {
+	posts, err := s.repo.FindAllPost(r.Context())
 	if err != nil {
 		utils.Error(w, http.StatusBadRequest, err)
 		return
@@ -43,7 +43,7 @@ func (s Server) createPost(w http.ResponseWriter, r *http.Request) {
 
 	post.PublishedAt = time.Now()
 
-	if err := s.repo.InsertPost(post); err != nil {
+	if err := s.repo.InsertPost(post, r.Context()); err != nil {
 		utils.Error(w, http.StatusBadRequest, err)
 		return
 	}
@@ -68,7 +68,7 @@ func (s Server) updatePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	post.ID = id
-	if err := s.repo.UpdatePost(post); err != nil {
+	if err := s.repo.UpdatePost(post, r.Context()); err != nil {
 		utils.Error(w, http.StatusBadRequest, err)
 		return
 	}
@@ -87,7 +87,7 @@ func (s Server) deletePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := s.repo.DeletePost(id); err != nil {
+	if err := s.repo.DeletePost(id, r.Context()); err != nil {
 		utils.Error(w, http.StatusBadRequest, err)
 		return
 	}

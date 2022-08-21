@@ -6,9 +6,9 @@ import (
 	"time"
 )
 
-func (r *Repository) FindTagById(id int) (*models.Tag, error) {
+func (r *Repository) FindTagById(id int, ctx context.Context) (*models.Tag, error) {
 	var tag models.Tag
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
 
 	query := `SELECT id, name FROM tag WHERE id = $1`
@@ -19,9 +19,9 @@ func (r *Repository) FindTagById(id int) (*models.Tag, error) {
 	return &tag, nil
 }
 
-func (r Repository) FindAllTag() ([]*models.Tag, error) {
+func (r Repository) FindAllTag(ctx context.Context) ([]*models.Tag, error) {
 	var tags []*models.Tag
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
 
 	query := `SELECT id, name FROM tag`
@@ -33,8 +33,8 @@ func (r Repository) FindAllTag() ([]*models.Tag, error) {
 	return tags, nil
 }
 
-func (r Repository) InsertTag(tag models.Tag) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+func (r Repository) InsertTag(tag models.Tag, ctx context.Context) error {
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
 
 	query := `INSERT INTO tag (name) VALUES ($1)`
@@ -53,8 +53,8 @@ func (r Repository) InsertTag(tag models.Tag) error {
 	return nil
 }
 
-func (r Repository) UpdateTag(tag models.Tag) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+func (r Repository) UpdateTag(tag models.Tag, ctx context.Context) error {
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
 
 	query := `UPDATE tag SET name = $1 WHERE id = $2`
@@ -73,8 +73,8 @@ func (r Repository) UpdateTag(tag models.Tag) error {
 	return nil
 }
 
-func (r Repository) DeleteTag(id int) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+func (r Repository) DeleteTag(id int, ctx context.Context) error {
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
 
 	query := `DELETE FROM tag WHERE id = $1`
