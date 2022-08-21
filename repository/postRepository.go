@@ -6,9 +6,9 @@ import (
 	"time"
 )
 
-func (r *Repository) FindPostById(id int) (*models.Post, error) {
+func (r *Repository) FindPostById(id int, c context.Context) (*models.Post, error) {
 	var post models.Post
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(c, 5*time.Second)
 	defer cancel()
 
 	query := `SELECT id, author_id, title, slug, summary, content, published_at FROM post WHERE id = $1`
@@ -19,9 +19,9 @@ func (r *Repository) FindPostById(id int) (*models.Post, error) {
 	return &post, nil
 }
 
-func (r Repository) FindAllPost() ([]*models.Post, error) {
+func (r Repository) FindAllPost(c context.Context) ([]*models.Post, error) {
 	var posts []*models.Post
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(c, 5*time.Second)
 	defer cancel()
 
 	query := `SELECT id, author_id, title, slug, summary, content, published_at FROM post`
@@ -33,8 +33,8 @@ func (r Repository) FindAllPost() ([]*models.Post, error) {
 	return posts, nil
 }
 
-func (r Repository) InsertPost(post models.Post) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+func (r Repository) InsertPost(post models.Post, c context.Context) error {
+	ctx, cancel := context.WithTimeout(c, 5*time.Second)
 	defer cancel()
 
 	query := `INSERT INTO post (author_id, title, slug, summary, content, published_at) VALUES ($1, $2, $3, $4, $5, $6)`
@@ -52,8 +52,8 @@ func (r Repository) InsertPost(post models.Post) error {
 	return nil
 }
 
-func (r Repository) UpdatePost(post models.Post) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+func (r Repository) UpdatePost(post models.Post, c context.Context) error {
+	ctx, cancel := context.WithTimeout(c, 5*time.Second)
 	defer cancel()
 
 	query := `UPDATE post SET author_id = $1, title = $2, slug = $3, summary = $4, content = $5 WHERE id = $7`
@@ -72,8 +72,8 @@ func (r Repository) UpdatePost(post models.Post) error {
 	return nil
 }
 
-func (r Repository) DeletePost(id int) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+func (r Repository) DeletePost(id int, c context.Context) error {
+	ctx, cancel := context.WithTimeout(c, 5*time.Second)
 	defer cancel()
 
 	query := `DELETE FROM post WHERE id = $1`
