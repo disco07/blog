@@ -1,11 +1,11 @@
 FROM golang:1.18 AS builder
-WORKDIR /movies-go
+WORKDIR /blog-go
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o movies-go ./cmd/api
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o blog-go ./cmd/api
 
 FROM scratch
-COPY --from=builder ./movies-go/movies-go /usr/bin/movies-go
+COPY --from=builder ./blog-go/blog-go /usr/bin/blog-go
 EXPOSE 4001
-ENTRYPOINT ["/usr/bin/movies-go"]
+ENTRYPOINT ["/usr/bin/blog-go"]
